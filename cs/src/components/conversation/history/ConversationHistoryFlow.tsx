@@ -135,9 +135,9 @@ const ConversationHistoryFlow = ({
 			fitView
 			style={{ backgroundColor: "#FDF4E2" }}
 		>
-			<button
-        style={{ backgroundColor: "#F3AF97", position: 'absolute', right: 30, bottom: 50, zIndex: 100 }}
-		>ホームへ戻る</button>
+			<button style={{ height: 45, width:150, color: 'white', fontWeight: 'bold', fontSize: '1.2em', backgroundColor: "#F3AF97", borderRadius: '10px', position: 'absolute', right: 30, bottom: 50, zIndex: 100 }}>
+				ホームへ戻る
+			</button>
 		</ReactFlow>
 	);
 };
