@@ -85,7 +85,7 @@ const ConversationHistoryFlow = ({
 
 	const onNodeMouseEnter = (event, node) => {
 		// ノードにカーソルが重なったときの処理
-		console.log('Mouse entered node:', node);
+		console.log("Mouse entered node:", node);
 		// node.style.background = "#FFF";
 		setNodes((nds) =>
 			nds.map((n) => {
@@ -94,7 +94,7 @@ const ConversationHistoryFlow = ({
 						...n, // ここで元のノードのプロパティを保持
 						style: {
 							...n.style, // 元のスタイルを保持しつつ
-							backgroundColor: '#D9D9D9', // 新しい背景色を設定
+							backgroundColor: "#D9D9D9", // 新しい背景色を設定
 						},
 					};
 				}
@@ -105,7 +105,7 @@ const ConversationHistoryFlow = ({
 
 	const onNodeMouseLeave = (event, node) => {
 		// ノードにカーソルが重なったときの処理
-		console.log('Mouse leaved node:', node);
+		console.log("Mouse leaved node:", node);
 		setNodes((nds) =>
 			nds.map((n) => {
 				if (n.id === node.id) {
@@ -113,7 +113,7 @@ const ConversationHistoryFlow = ({
 						...n, // ここで元のノードのプロパティを保持
 						style: {
 							...n.style, // 元のスタイルを保持しつつ
-							backgroundColor: '#F9F9F9', // 新しい背景色を設定
+							backgroundColor: "#F9F9F9", // 新しい背景色を設定
 						},
 					};
 				}
@@ -135,7 +135,11 @@ const ConversationHistoryFlow = ({
 			fitView
 			style={{ backgroundColor: "#FDF4E2" }}
 		>
-			<button style={{ height: 45, width:150, color: 'white', fontWeight: 'bold', fontSize: '1.2em', backgroundColor: "#F3AF97", borderRadius: '10px', position: 'absolute', right: 30, bottom: 50, zIndex: 100 }}>
+			<div style={{width:"75%", backgroundColor: "#F3AF97", position: "absolute", top: 200, zIndex: 100}}>
+				<p>総評！</p>
+				<p>サンプルサンプルサンプル</p>
+			</div>
+			<button style={{ height: 45, width:150, color: "white", fontWeight: "bold", fontSize: "1.2em", backgroundColor: "#F3AF97", borderRadius: "10px", position: "absolute", right: 30, bottom: 50, zIndex: 100 }}>
 				ホームへ戻る
 			</button>
 		</ReactFlow>
