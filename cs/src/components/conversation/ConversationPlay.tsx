@@ -6,6 +6,7 @@ import useConversation from "@/hooks/use-conversation";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
+import { useUser } from "@clerk/nextjs";
 
 const ConversationPage = ({ conversationSessionId }: { conversationSessionId: string }) => {
 	const {
@@ -21,6 +22,7 @@ const ConversationPage = ({ conversationSessionId }: { conversationSessionId: st
 		conversationAnalysis,
 		scrollRef,
 	} = useConversation({ conversationSessionId });
+	const { user } = useUser()
 
 	return (
 		<div>
@@ -37,7 +39,11 @@ const ConversationPage = ({ conversationSessionId }: { conversationSessionId: st
 										<div className="flex items-center gap-3">
 											<Avatar className="rounded-full shadow">
 												<AvatarImage
-													src="https://github.com/shadcn.png"
+													src={
+														conversationItem.role === "user"
+															? user?.imageUrl
+															: "https://github.com/shadcn.png"
+													}
 													className="w-8 rounded-full"
 												/>
 												<AvatarFallback>CN</AvatarFallback>
@@ -45,7 +51,10 @@ const ConversationPage = ({ conversationSessionId }: { conversationSessionId: st
 											<div className="font-bold">
 												{(
 													conversationItem.role || conversationItem.type
-												).replaceAll("_", " ")}
+												).replaceAll("_", " ") === "user"
+													? `${user?.lastName} ${user?.firstName}`
+													: "Oz"
+												}
 											</div>
 										</div>
 										<div className="text-gray-500">
