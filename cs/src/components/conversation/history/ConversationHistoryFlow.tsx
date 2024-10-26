@@ -122,10 +122,21 @@ const ConversationHistoryFlow = ({
 		);
 	};
 
+	const [popupContent, setPopupContent] = useState(null);
+    const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
+
 	const onNodeClick = (event, node) => {
 		// ノードにカーソルが重なったときの処理
 		console.log("node clicked:", node);
+		setPopupContent(node.data.popupContent); // ノードのpopupContentをポップアップに表示
+        // setPopupPosition({ x: node.position.x, y: node.position.y });
+		setPopupPosition({ x: event.clientX, y: event.clientY });
+		console.log("node clicked44:", node);
 	}
+
+	const closePopup = () => {
+        setPopupContent(null);
+    };
 
 	return (
 		<ReactFlow
@@ -141,6 +152,30 @@ const ConversationHistoryFlow = ({
 			fitView
 			style={{ backgroundColor: "#FDF4E2" }}
 		>
+		{popupContent && (
+            <div
+                // onClick={closePopup}
+                style={{
+					position: "absolute",
+					top: popupPosition.y - 100,
+					left: popupPosition.x - 100,
+					backgroundColor: "#939498",
+					border: "1px solid black",
+					padding: "10px",
+					width: 300,
+					borderRadius: "10px",
+					zIndex: 1000,
+				}}
+            >
+				<div style={{ textAlign: "left", color: "white", }}>
+					<p>{popupContent}</p>
+				</div>
+				<div>
+					<button onClick={closePopup}>閉じる</button>
+					<button>ここから</button>
+				</div>
+            </div>
+		)}
 			<div style={{width:"80%", backgroundColor: "#F3AF97", position: "absolute", top: 150, left: "50%", transform: "translateX(-50%)", zIndex: 100, padding: "20px"}}>
 				<div style={{ textAlign: "left" }}>
 					<p style={{fontSize: "2em"}}>総評！</p>

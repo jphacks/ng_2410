@@ -7,6 +7,7 @@ import {
 import { createClerkSupabaseClient } from "@/utils/supabase/client";
 import { auth } from "@clerk/nextjs/server";
 import React from "react";
+import { string } from "zod";
 
 const ConversationHistoryDetail = async ({
 	params,
@@ -47,7 +48,7 @@ const ConversationHistoryDetail = async ({
 	const addNode = (message: MessageWithChildren) => {
 		messageNodes.push({
 			id: message.id,
-			data: { label: message.content },
+			data: { label: message.content, popupContent: "サンプルサンプル" + String(message.id) },
 			position: { x: 0, y: 0 },
 		});
 		message.children.map(addNode);
