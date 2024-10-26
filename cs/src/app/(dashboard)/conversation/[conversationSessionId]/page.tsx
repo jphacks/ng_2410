@@ -3,9 +3,12 @@ import {
 	ConversationSession,
 	ConversationSessionWithChildren,
 	conversationToTree,
+	Message,
+	MessageWithChildren,
 } from "@/types/conversation";
 import { createClerkSupabaseClient } from "@/utils/supabase/client";
 import { auth } from "@clerk/nextjs/server";
+import { ItemType } from "@openai/realtime-api-beta/dist/lib/client";
 
 const ConversationPage = async ({
 	params,
@@ -46,7 +49,7 @@ const ConversationPage = async ({
 			parentItemId: messageItem.parent_item_id,
 			content: messageItem.content,
 			createdAt: messageItem.created_at,
-		})),
+		}) as Message),
 	};
 
 	const conversationSessionWithChildren: ConversationSessionWithChildren = {
@@ -55,10 +58,50 @@ const ConversationPage = async ({
 		name: conversationsSession.name,
 		children: conversationToTree(conversationsSession.messages),
 	};
+	if (firstItemId && conversationSessionWithChildren.children.length) {
+		console.log("=========================")
+		console.log("conversationSessionWithChildren", conversationSessionWithChildren.children[0])
+		console.log("firstItemId", firstItemId)
+		const findItem = (message: MessageWithChildren) => {
+			if (message.itemId === firstItemId && message.role === "assistant") {
+				return message;
+			}
+			for (const child of message.children) {
+				const found = findItem(child) as MessageWithChildren
+				if (found) {
+					return found;
+				}
+			}
+			return null;
+		};
+		const firstItem = findItem(conversationSessionWithChildren.children[0]);
+		console.log(firstItem);
 
-	return (
-		<ConversationPlay conversationSessionId={conversationSessionId} />
-	);
+		const getIds = (message: MessageWithChildren) => {
+			const ids = [message.itemId];
+			for (const child of message.children) {
+				ids.push(...getIds(child));
+			}
+			return ids;
+		}
+		if (!firstItem) {
+			console.error("Not found first item");
+			return <div className="py-[63px]">Not found first item</div>;
+		}
+
+		const idList = getIds(firstItem);
+		console.log(idList);
+
+		return (
+			<ConversationPlay conversationSessionId={conversationSessionId} />
+		);
+	} else {
+		// 新規に始める場合
+		// 指定せずに最後のメッセ時で始める
+		return (
+			<ConversationPlay conversationSessionId={conversationSessionId} />
+		);
+	}
 };
 
 export default ConversationPage;
