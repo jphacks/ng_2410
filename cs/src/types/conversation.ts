@@ -27,6 +27,8 @@ export type MessageWithChildren = {
 	conversationSessionId: string;
 	role: "user" | "assistant";
 	content: string;
+	itemId: string;
+	parentItemId: string | null;
 	children: MessageWithChildren[];
 	createdAt: string;
 };
