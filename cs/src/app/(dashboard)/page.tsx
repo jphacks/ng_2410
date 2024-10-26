@@ -1,10 +1,12 @@
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const Home = () => {
 	return (
 		<div className="py-[62px]">
-			<Link href="/conversation">スタート！</Link>
-			<div>Welcome!</div>
+			<Button asChild>
+				<Link href="/conversation">スタート！</Link>
+			</Button>
 		</div>
 	);
 };
