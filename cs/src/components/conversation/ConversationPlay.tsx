@@ -26,7 +26,7 @@ const ConversationPage = ({ conversationSessionId }: { conversationSessionId: st
 
 	return (
 		<div>
-			<div className="absolute max-w-[1000px] mx-auto">
+			<div className="absolute z-20 max-w-[1000px] mx-auto">
 				<ScrollArea className="h-[calc(100vh-62px)] w-[440px] mt-[62px]">
 					<div className="mt-5">
 						{items.length > 0 &&
@@ -123,7 +123,7 @@ const ConversationPage = ({ conversationSessionId }: { conversationSessionId: st
 			{/* 俺俺実装 */}
 			<div className="bg-[#FDF4E2] h-screen flex">
 				<div>
-					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-full">
+					<div className="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-full">
 						<Avatar className="rounded-full shadow">
 							<AvatarImage
 								src="https://github.com/shadcn.png"
