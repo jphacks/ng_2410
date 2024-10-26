@@ -81,6 +81,13 @@ const useConversation = ({
 		// Connect to realtime API
 		await client.connect();
 
+		// client.sendUserMessageContent([
+		// 	{
+		// 		type: `input_text`,
+		// 		text: `Hello!`,
+		// 	},
+		// ]);
+
 		if (client.getTurnDetectionType() === "server_vad") {
 			await wavRecorder.record((data) => client.appendInputAudio(data.mono));
 		}
@@ -222,7 +229,6 @@ const useConversation = ({
 				item.role === "user" &&
 				item.formatted.transcript
 			) {
-				console.log(item);
 				// 会話分析を取得する
 				const messages = items.map((item) => ({
 					text: item.formatted.transcript || null,
@@ -265,7 +271,6 @@ const useConversation = ({
 						console.error(supabaseError);
 						toast.error("通信エラーが発生しました。");
 					}
-					console.log(data);
 				}
 			}
 
@@ -299,8 +304,6 @@ const useConversation = ({
 						console.error(supabaseError);
 						toast.error("通信エラーが発生しました。");
 					}
-
-					console.log(data);
 				}
 			}
 
