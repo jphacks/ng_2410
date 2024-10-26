@@ -71,13 +71,11 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
 	const prompt = conversationText + "\n\n" + conversationPrompt
 	const data = await llm.invoke(prompt);
-		console.log(prompt)
-		return NextResponse.json({ message: data });
-	// if (!token) {
-	// 	return Response.json({ message: "Unauthorized" }, { status: 401 });
-	// }
-	// return Response.json({
-	// 	message:
-	// 		"とてもいいですね！話を広げる質問をしています．とてもいいですね！話を広げる質問をしています．とてもいいですね！話を広げる質問をしています．とてもいいですね！話を広げる質問をしています．",
-	// });
+	console.log(prompt)
+	if (!token) {
+		return Response.json({ message: "Unauthorized" }, { status: 401 });
+	}
+	return Response.json({
+		message: data
+	});
 };
