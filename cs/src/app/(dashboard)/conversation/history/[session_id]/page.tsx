@@ -58,6 +58,8 @@ const ConversationHistoryDetail = async ({
 				id: `${message.id}-${child.id}`,
 				source: message.id,
 				target: child.id,
+				animated: true,
+				style: { strokeWidth: 4 },
 			});
 			addEdge(child);
 		});
