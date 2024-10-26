@@ -5,9 +5,10 @@ import { getConversationAnalysis } from "@/repository/api/conversationAnalysis";
 import { ConversationAnalysis } from "@/types/conversationAnalysis";
 import { instructions } from "@/utils/conversation_config";
 import { RealtimeClient } from "@openai/realtime-api-beta";
-import { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
+import { AssistantItemType, BaseItemType, FormattedItemType, FormattedPropertyType, FunctionCallItemType, FunctionCallOutputItemType, ItemType, SystemItemType, UserItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
 import { toast } from "sonner";
 import { useSupabaseClient } from "./use-supabaseClient";
+import { ConversationSessionWithChildren, Message, MessageWithChildren } from "@/types/conversation";
 
 interface RealtimeEvent {
 	time: string;
@@ -16,9 +17,17 @@ interface RealtimeEvent {
 	event: { [key: string]: any };
 }
 
+type MessageType = {
+	id: string;
+	role: "assistant" | "user" | "system" | undefined
+	content: string | null;
+	formatted: FormattedPropertyType;
+};
+
 const useConversation = ({
 	conversationSessionId,
-}: { conversationSessionId: string }) => {
+	prevConversationSessionWithChildren,
+}: { conversationSessionId: string, prevConversationSessionWithChildren?: ConversationSessionWithChildren }) => {
 	const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 	const { client: supabaseClient, session } = useSupabaseClient()
 	/**
@@ -51,6 +60,7 @@ const useConversation = ({
 	 * - coords, marker are for get_weather() function
 	 */
 	const [items, setItems] = useState<ItemType[]>([]);
+	const [messages, setMessages] = useState<MessageType[]>([]);
 	const [realtimeEvents, setRealtimeEvents] = useState<RealtimeEvent[]>([]);
 	const [isConnected, setIsConnected] = useState(false);
 	const [canPushToTalk, setCanPushToTalk] = useState(true);
@@ -71,7 +81,12 @@ const useConversation = ({
 		setIsConnected(true);
 		setRealtimeEvents([]);
 		setItems(client.conversation.getItems());
-
+		setMessages(client.conversation.getItems().map((item) => ({
+			id: item.id,
+			role: item.role,
+			content: item.formatted.transcript || null,
+			formatted: item.formatted,
+		})))
 		// Connect to microphone
 		await wavRecorder.begin();
 
@@ -308,9 +323,30 @@ const useConversation = ({
 			}
 
 			setItems(items);
+			setMessages(prev => [...prev, {
+				id: item.id,
+				role: item.role,
+				content: item.formatted.transcript || null,
+				formatted: item.formatted,
+			}])
 		});
 
 		setItems(client.conversation.getItems());
+		setMessages([{
+			id: "test",
+			role: "user",
+			content: "test",
+			formatted: {
+				transcript: "test",
+			}
+		}, {
+			id: "test",
+			role: "user",
+			content: "test",
+			formatted: {
+				transcript: "test",
+			}
+		}])
 
 		return () => {
 			// cleanup; resets to defaults
@@ -320,6 +356,7 @@ const useConversation = ({
 
 	return {
 		items,
+		messages,
 		isConnected,
 		disconnectConversation,
 		connectConversation,

@@ -6,9 +6,12 @@ import useConversation from "@/hooks/use-conversation";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
+import { ConversationSessionWithChildren } from "@/types/conversation";
+import { useUser } from "@clerk/nextjs";
 
-const ConversationPage = ({ conversationSessionId }: { conversationSessionId: string }) => {
+const ConversationPage = ({ prevConversationSessionWithChildren, conversationSessionId }: { prevConversationSessionWithChildren: ConversationSessionWithChildren, conversationSessionId: string }) => {
 	const {
+		messages,
 		items,
 		isConnected,
 		disconnectConversation,
@@ -20,48 +23,53 @@ const ConversationPage = ({ conversationSessionId }: { conversationSessionId: st
 		changeTurnEndType,
 		conversationAnalysis,
 		scrollRef,
-	} = useConversation({ conversationSessionId });
+	} = useConversation({ conversationSessionId, prevConversationSessionWithChildren });
+	const { user } = useUser()
 
 	return (
 		<div>
 			<div className="absolute max-w-[1000px] mx-auto">
 				<ScrollArea className="h-[calc(100vh-62px)] w-[440px] mt-[62px]">
 					<div className="mt-5">
-						{items.length > 0 &&
-							items.map((conversationItem) => (
+						{messages.length > 0 &&
+							messages.map((message) => (
 								<div
-									key={conversationItem.id}
+									key={message.id}
 									className="mx-5 [data-conversation-content]"
 								>
 									<div className="bg-[#FBEFE3] w-[400px] rounded-xl shadow-xl p-3">
 										<div className="flex items-center gap-3">
 											<Avatar className="rounded-full shadow">
 												<AvatarImage
-													src="https://github.com/shadcn.png"
+													src={
+														message.role === "user"
+															? user?.imageUrl
+															: "https://github.com/shadcn.png"
+													}
 													className="w-8 rounded-full"
 												/>
 												<AvatarFallback>CN</AvatarFallback>
 											</Avatar>
 											<div className="font-bold">
-												{(
-													conversationItem.role || conversationItem.type
-												).replaceAll("_", " ")}
+												{message.role === "user"
+													? `${user?.lastName} ${user?.firstName}`
+													: "Oz"}
 											</div>
 										</div>
 										<div className="text-gray-500">
-											{conversationItem.role === "user" && (
+											{message.role === "user" && (
 												<div>
-													{conversationItem.formatted.transcript ||
-														(conversationItem.formatted.audio?.length
+													{message.formatted.transcript ||
+														(message.formatted.audio?.length
 															? "(awaiting transcript)"
-															: conversationItem.formatted.text ||
+															: message.formatted.text ||
 															"(item sent)")}
 												</div>
 											)}
-											{conversationItem.role === "assistant" && (
+											{message.role === "assistant" && (
 												<div>
-													{conversationItem.formatted.transcript ||
-														conversationItem.formatted.text ||
+													{message.formatted.transcript ||
+														message.formatted.text ||
 														"(truncated)"}
 												</div>
 											)}
@@ -69,11 +77,11 @@ const ConversationPage = ({ conversationSessionId }: { conversationSessionId: st
 									</div>
 									<div className="border-l-4 ml-7 border-gray-500 min-h-10 border-opacity-50 pl-10 py-5">
 										{conversationAnalysis.filter(
-											(v) => v.item_id === conversationItem.id,
+											(v) => v.item_id === message.id,
 										).length > 0 ? (
 											<div>
 												{conversationAnalysis
-													.filter((v) => v.item_id === conversationItem.id)
+													.filter((v) => v.item_id === message.id)
 													.map((v) => (
 														<div
 															key={v.item_id}
@@ -87,7 +95,7 @@ const ConversationPage = ({ conversationSessionId }: { conversationSessionId: st
 													))}
 											</div>
 										) : (
-											conversationItem.role === "user" && (
+											message.role === "user" && (
 												<div className="bg-blue-100 rounded-xl shadow-xl p-3">
 													<div className="font-extrabold">AI分析</div>
 													<Skeleton className="h-[16px] rounded-full mt-3" />

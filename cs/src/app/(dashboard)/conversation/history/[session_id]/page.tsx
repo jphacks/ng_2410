@@ -46,7 +46,7 @@ const ConversationHistoryDetail = async ({
 	const addNode = (message: MessageWithChildren) => {
 		messageNodes.push({
 			id: message.id,
-			data: { label: message.content },
+			data: { label: `${message.content} ${message.itemId}`, }, //TODO: 削除
 			position: { x: 0, y: 0 },
 		});
 		message.children.map(addNode);

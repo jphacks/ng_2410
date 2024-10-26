@@ -60,8 +60,6 @@ const ConversationPage = async ({
 	};
 	if (firstItemId && conversationSessionWithChildren.children.length) {
 		console.log("=========================")
-		console.log("conversationSessionWithChildren", conversationSessionWithChildren.children[0])
-		console.log("firstItemId", firstItemId)
 		const findItem = (message: MessageWithChildren) => {
 			if (message.itemId === firstItemId && message.role === "assistant") {
 				return message;
@@ -75,31 +73,46 @@ const ConversationPage = async ({
 			return null;
 		};
 		const firstItem = findItem(conversationSessionWithChildren.children[0]);
-		console.log(firstItem);
 
-		const getIds = (message: MessageWithChildren) => {
-			const ids = [message.itemId];
-			for (const child of message.children) {
-				ids.push(...getIds(child));
-			}
-			return ids;
-		}
 		if (!firstItem) {
 			console.error("Not found first item");
 			return <div className="py-[63px]">Not found first item</div>;
 		}
 
-		const idList = getIds(firstItem);
-		console.log(idList);
+		// firstItemで打ち切る(firstItemId以降のメッセージを削除)
+		// childrenが複数ある場合は[0]を使用する
+		const getPrevMessages = (itemId: string) => {
+			const prevMessages: MessageWithChildren[] = [];
+			const findItem = (message: MessageWithChildren) => {
+				prevMessages.push(message);
+				if (message.itemId === itemId) {
+					return;
+				}
+				if (message.children.length) {
+					findItem(message.children[0]);
+				}
+			};
+			findItem(conversationSessionWithChildren.children[0]);
+			return prevMessages;
+		}
+
+		const prevMessages = getPrevMessages(firstItemId);
+
+		const prevConversationSessionWithChildren: ConversationSessionWithChildren = {
+			id: conversationsSession.id,
+			createdAt: conversationsSession.createdAt,
+			name: conversationsSession.name,
+			children: conversationToTree(prevMessages),
+		};
 
 		return (
-			<ConversationPlay conversationSessionId={conversationSessionId} />
+			<ConversationPlay prevConversationSessionWithChildren={prevConversationSessionWithChildren} conversationSessionId={conversationSessionId} />
 		);
 	} else {
 		// 新規に始める場合
 		// 指定せずに最後のメッセ時で始める
 		return (
-			<ConversationPlay conversationSessionId={conversationSessionId} />
+			<ConversationPlay prevConversationSessionWithChildren={conversationSessionWithChildren} conversationSessionId={conversationSessionId} />
 		);
 	}
 };
