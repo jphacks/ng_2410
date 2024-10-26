@@ -9,7 +9,7 @@ import {
 	useEdgesState,
 	useNodesState,
 } from "@xyflow/react";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import "@xyflow/react/dist/style.css";
 
 const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
@@ -42,6 +42,9 @@ const getLayoutedElements = (nodes: any, edges: any, direction = "LR") => {
 			position: {
 				x: nodeWithPosition.x - nodeWidth / 2,
 				y: nodeWithPosition.y - nodeHeight / 2,
+			},
+			style:{border: "5px solid #FDF4E2",
+				boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.4)",
 			},
 		};
 
@@ -77,6 +80,47 @@ const ConversationHistoryFlow = ({
 			),
 		[],
 	);
+	console.log("っっp");
+	console.log("チェえええ");
+
+	const onNodeMouseEnter = (event, node) => {
+		// ノードにカーソルが重なったときの処理
+		console.log('Mouse entered node:', node);
+		// node.style.background = "#FFF";
+		setNodes((nds) =>
+			nds.map((n) => {
+				if (n.id === node.id) {
+					return {
+						...n, // ここで元のノードのプロパティを保持
+						style: {
+							...n.style, // 元のスタイルを保持しつつ
+							backgroundColor: '#D9D9D9', // 新しい背景色を設定
+						},
+					};
+				}
+			return n; // 条件に合わないノードはそのまま返す
+			})
+		);
+	};
+
+	const onNodeMouseLeave = (event, node) => {
+		// ノードにカーソルが重なったときの処理
+		console.log('Mouse leaved node:', node);
+		setNodes((nds) =>
+			nds.map((n) => {
+				if (n.id === node.id) {
+					return {
+						...n, // ここで元のノードのプロパティを保持
+						style: {
+							...n.style, // 元のスタイルを保持しつつ
+							backgroundColor: '#F9F9F9', // 新しい背景色を設定
+						},
+					};
+				}
+			return n; // 条件に合わないノードはそのまま返す
+			})
+		);
+	};
 
 	return (
 		<ReactFlow
@@ -85,10 +129,16 @@ const ConversationHistoryFlow = ({
 			onNodesChange={onNodesChange}
 			onEdgesChange={onEdgesChange}
 			onConnect={onConnect}
+			onNodeMouseEnter={onNodeMouseEnter}
+			onNodeMouseLeave={onNodeMouseLeave}
 			connectionLineType={ConnectionLineType.SmoothStep}
 			fitView
-			style={{ backgroundColor: "#FBEFE3" }}
-		></ReactFlow>
+			style={{ backgroundColor: "#FDF4E2" }}
+		>
+			<button
+        style={{ backgroundColor: "#F3AF97", position: 'absolute', right: 30, bottom: 50, zIndex: 100 }}
+		>ホームへ戻る</button>
+		</ReactFlow>
 	);
 };
 

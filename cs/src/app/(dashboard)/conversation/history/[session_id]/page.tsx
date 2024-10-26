@@ -12,6 +12,7 @@ const ConversationHistoryDetail = async ({
 	params,
 }: { params: { session_id: string } }) => {
 	const { session_id } = params;
+	// console.log(params);
 	const { getToken, userId } = await auth();
 	const token = await getToken({ template: "supabase" });
 	if (!token) {
