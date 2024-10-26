@@ -17,7 +17,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 	const user = await currentUser();
 	return (
 		<>
-			<div className="w-full border-b px-5 absolute z-10">
+			<div className="w-full bg-[#F9DA9A] px-5 absolute z-10">
 				<div className="flex justify-between items-center h-[62px]">
 					<Link href="/" className="font-bold">
 						モットーーク

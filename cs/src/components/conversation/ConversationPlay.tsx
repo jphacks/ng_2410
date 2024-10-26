@@ -112,7 +112,7 @@ const ConversationPage = ({ conversationSessionId }: { conversationSessionId: st
 				</ScrollArea>
 			</div>
 			{/* 俺俺実装 */}
-			<div className="bg-[#FFA074] h-screen flex">
+			<div className="bg-[#FDF4E2] h-screen flex">
 				<div>
 					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-full">
 						<Avatar className="rounded-full shadow">
