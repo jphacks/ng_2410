@@ -9,9 +9,11 @@ import { auth } from "@clerk/nextjs/server";
 
 const ConversationPage = async ({
 	params,
-}: { params: { conversationSessionId: string } }) => {
+	searchParams
+}: { params: { conversationSessionId: string }, searchParams: { first_item_id: string } }) => {
 	const { getToken } = await auth();
 	const { conversationSessionId } = params;
+	const firstItemId = searchParams.first_item_id;
 	const token = await getToken({ template: "supabase" });
 	if (!token) {
 		console.error("Unauthorized");
