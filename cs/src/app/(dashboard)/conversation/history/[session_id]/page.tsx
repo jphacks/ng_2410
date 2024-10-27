@@ -120,7 +120,7 @@ const ConversationHistoryDetail = async ({
 
 それぞれの項目に関して採点した結果を以下のJSON形式で返してください。
 {
-	"result": number[10] (10個の配列でそれぞれ1~10の値を入れてください)
+	"result": number[10] (10個の配列でそれぞれ0~10の値を入れてください)
 	"error": string (エラーがあればエラーメッセージを入れてください)
 }
 `;
