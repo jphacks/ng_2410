@@ -169,12 +169,12 @@ const ConversationHistoryFlow = ({
 				}}
             >
 				<div style={{ textAlign: "right", color: "white", }}>
-					<p><span style={{ fontWeight: "bold" }}>{typeof popupContent === "string" ? popupContent.split(':')[1] : popupContent}</span>点 / 100</p>
+					<p><span style={{ fontWeight: "bold" }}>{typeof popupContent === "string" ? popupContent.split('::::')[1] : popupContent}</span>点 / 100</p>
 				</div>
 				<div style={{ textAlign: "left", color: "white", paddingBottom: 10}}>
 					<p>Advice：</p>
 					{/* <p>{popupContent.split(':')}</p> */}
-					<p>{typeof popupContent === "string" ? popupContent.split(':')[0] : popupContent}</p>
+					<p>{typeof popupContent === "string" ? popupContent.split('::::')[0] : popupContent}</p>
 				</div>
 				<div style={{ textAlign: "right", color: "white"}}>
 					<button onClick={closePopup}>閉じる</button>
@@ -183,10 +183,12 @@ const ConversationHistoryFlow = ({
             </div>
 		)}
 			<div style={{width:"80%", backgroundColor: "#F3AF97", position: "absolute", top: 150, left: "50%", transform: "translateX(-50%)", zIndex: 100, padding: "20px"}}>
+				<div style={{ display: "flex", justifyContent: "space-between", width: "100%",fontSize: "2em", fontWeight: "bold", }}>
+					<p style={{ margin: 0 }}>総評！</p>
+					<p style={{ margin: 0 }}>{analysisArray[1]}点 / 100</p>
+				</div>
 				<div style={{ textAlign: "left" }}>
-					<p style={{fontSize: "2em", fontWeight: "bold",}}>総評！</p>
 					<p style={{fontSize: "1em"}}>{analysisArray[0]}</p>
-					<p style={{fontSize: "1em"}}>{analysisArray[1]}</p>
 				</div>
 			</div>
 

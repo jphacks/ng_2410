@@ -52,7 +52,7 @@ const ConversationHistoryDetail = async ({
 	const addNode = (message: MessageWithChildren) => {
 		messageNodes.push({
 			id: message.id,
-			data: { label: message.content, popupContent: "サンプルサンプル" + String(message.id) + ":" + 90},
+			data: { label: message.content, popupContent: "サンプルサンプル" + String(message.id) + "::::" + 90},
 			position: { x: 0, y: 0 },
 		});
 		message.children.map(addNode);
