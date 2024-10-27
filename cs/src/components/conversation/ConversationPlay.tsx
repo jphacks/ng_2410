@@ -165,6 +165,11 @@ const ConversationPage = ({ conversationSessionId }: { conversationSessionId: st
 					>
 						ボタン
 					</button>
+					<div>
+						<a href={`/conversation/history/${conversationSessionId}`}>
+							評価ページへ
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>

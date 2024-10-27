@@ -68,16 +68,48 @@ const ConversationHistoryDetail = async ({
 	const text_analy = content.content //
 	console.log(text_analy)
 
+	const score_prompt = `与えられる会話について、userの会話内容を採点して欲しいです。以下の評価項目に対して各項目を10点で採点してください。
+
+1 相手の出来事と、それに対する感情や考えをセットで質問する
+2 自分の話す量と相手の話す量が4:6になっている
+3 話題を振る際は先に自己開示をする
+4 話が盛り上がる話題に触れている（最近盛り上がっていること、力を入れていること、共通の知り合い、最近あったいいこと、ワクワクする出来事）
+5 関係を深める話題に触れている（自分に似ているキャラクターや有名人、子供の頃の夢、一番恐れていること、一番後悔していること、原動力、影響を受けたコンテンツ、自分についての取り扱い説明）
+6 相槌の「さしすせそ」を活用している（「さすがです」「知らなかったです」「素敵です」
+7 相手に敬意を持っていることを伝える
+8 相槌のバリエーションがある
+9 一言の相槌で会話を止めず、一言足して返す
+10 相手が頑張っていること、こだわっていることを引き出して褒める
+
+それぞれの項目に関して採点した結果を以下のJSON形式で返してください。
+{
+	"result": number[10] (10個の配列でそれぞれ1~10の値を入れてください)
+	"error": string (エラーがあればエラーメッセージを入れてください)
+}
+`;
+
+	const score_input = `${score_prompt}\n\n${sortedMessages.map((msg) => `${msg.role}:${msg.content.replaceAll("\n", "")}`).join('\n\n')}`
+	const score_content = await llm.invoke(score_input);
+	console.log(score_content.content)
+	const jsonString = score_content.content as string
+	const trimed = jsonString.replace("```json", "").replace("```", "").trim()
+	console.log(trimed)
+	const scoreResult = JSON.parse(trimed)
+	console.log(scoreResult)
+	const totalScore = scoreResult.result.reduce((acc: number, cur: number) => acc + cur, 0)
+	console.log(totalScore)
+
+
 	// const analysisMessage = "総評サンプル文。きっと";
 	const analysisMessage = text_analy;
-	const analysisScore = String(70);
+	const analysisScore = String(totalScore);
 	const analysis = [analysisMessage, analysisScore];
 	const messageNodes = [] as any[];
 	const messageEdgs = [] as any[];
 	const addNode = (message: MessageWithChildren) => {
 		messageNodes.push({
 			id: message.id,
-			data: { label: message.content, popupContent: "サンプルサンプル" + String(message.id) + "::::" + 90},
+			data: { label: message.content, popupContent: "サンプルサンプル" + String(message.id) + "::::" + 90 },
 			position: { x: 0, y: 0 },
 		});
 		message.children.map(addNode);
