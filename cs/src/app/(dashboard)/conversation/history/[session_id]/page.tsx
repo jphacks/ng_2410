@@ -6,6 +6,7 @@ import {
 } from "@/types/conversation";
 import { createClerkSupabaseClient } from "@/utils/supabase/client";
 import { auth } from "@clerk/nextjs/server";
+import { ChatOpenAI } from '@langchain/openai';
 import React from "react";
 
 const ConversationHistoryDetail = async ({
@@ -40,6 +41,30 @@ const ConversationHistoryDetail = async ({
 		createdAt: message.created_at,
 	}));
 	const messagesWithChildren = conversationToTree(messages);
+
+	// 順番にした配列を作成（childrenがある場合は0番目の要素
+	const sortedMessages = [] as MessageWithChildren[];
+	const addMessage = (message: MessageWithChildren) => {
+		sortedMessages.push(message);
+		if (message.children.length) {
+			addMessage(message.children[0]);
+		}
+	};
+	addMessage(messagesWithChildren[0]);
+
+	// LLMに投げる
+	const llm = new ChatOpenAI({
+		modelName: "gpt-4o-mini",
+		openAIApiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY, // 環境変数でAPIキーを指定
+	});
+
+	const prompt = `以下の会話を分析してください`
+	const input = `${prompt}\n\n${sortedMessages.map((msg) => `${msg.role}:${msg.content.replaceAll("\n", "")}`).join('\n\n')}`
+	console.log(input)
+	const content = await llm.invoke(input);
+	const text = content.content //
+	console.log(text)
+
 
 	const messageNodes = [] as any[];
 	const messageEdgs = [] as any[];
