@@ -1,6 +1,6 @@
 # モットーク！
 
-[![IMAGE ALT TEXT HERE](images/conv.png)](https://www.youtube.com/watch?v=DZXUkEj-CSI)
+[![IMAGE ALT TEXT HERE](images/conv3.png)](https://www.youtube.com/watch?v=DZXUkEj-CSI)
 
 ## 製品概要
 ### 背景(製品開発のきっかけ、課題等）
@@ -41,8 +41,8 @@
 
 <img src="images/graph2.png" alt="graph2">
 <p align="center">
-  <img src="images/graph1.png" alt="graph1" width="45%">
-  <img src="images/graph3.png" alt="graph3" width="45%">
+  <img src="images/graph1.png" alt="graph1" height=250>
+  <img src="images/graph3.png" alt="graph3" height=250>
 </p>
 
 
