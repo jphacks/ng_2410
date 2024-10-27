@@ -37,7 +37,12 @@
 * 会話相手の背景を生成し、豊かな会話を行えるようにしました。
 * 1つ1つの発言をノード化し会話の流れをフローチャートで表現したり、評価点数を折れ線グラフで表現するなどの可視化により、見返しやすいUIとなるようこだわりました
 
-![gragh1](./images/スクリーンショット 2024-10-27 14.45.15.png)
+<img src="images/graph2.png" alt="graph2">
+<p align="center">
+  <img src="images/graph1.png" alt="graph1" width="40%">
+  <img src="images/graph3.png" alt="graph3" width="40%">
+</p>
+
 
 ## 開発技術
 ### 活用した技術
