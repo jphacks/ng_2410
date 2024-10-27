@@ -31,6 +31,8 @@ const getLayoutedElements = (nodes: any, edges: any, direction = "LR") => {
 
 	dagre.layout(dagreGraph);
 
+	console.log('otori');
+
 	const newNodes = nodes.map((node: any) => {
 		const nodeWithPosition = dagreGraph.node(node.id);
 		const newNode = {
