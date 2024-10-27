@@ -1,6 +1,6 @@
 # モットーク！
 
-[![IMAGE ALT TEXT HERE](images/conv3.png)](https://youtu.be/GGITT8S-ZWs)
+[![IMAGE ALT TEXT HERE](images/conv3.png)](https://youtu.be/QIW8d9J9BSU)
 
 ## 製品概要
 ### 背景(製品開発のきっかけ、課題等）
