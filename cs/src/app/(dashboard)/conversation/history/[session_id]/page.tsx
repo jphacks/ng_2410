@@ -123,6 +123,7 @@ const ConversationHistoryDetail = async ({
 	"result": number[10] (10個の配列でそれぞれ0~10の値を入れてください)
 	"error": string (エラーがあればエラーメッセージを入れてください)
 }
+会話が短い場合でも、できる限りの範囲で会話をしてください。
 `;
 
 	const score_input = `${score_prompt}\n\n${sortedMessages.map((msg) => `${msg.role}:${msg.content.replaceAll("\n", "")}`).join('\n\n')}`
@@ -146,7 +147,7 @@ const ConversationHistoryDetail = async ({
 	const addNode = (message: MessageWithChildren) => {
 		messageNodes.push({
 			id: message.id,
-			data: { label: message.content, popupContent: "サンプルサンプル" + String(message.id) + "::::" + 90 },
+			data: { label: message.content, popupContent: "次の「何のバイトをしてるんですか？」という質問は、もう少し踏み込んだ内容に変えることで深い会話に繋がった可能性があります。例えば、「書店でのバイトはどんなことが楽しいですか？」というような、相手の経験を深掘りする質問が効果的だったでしょう。 " + "::::" + 90 },
 			position: { x: 0, y: 0 },
 		});
 		message.children.map(addNode);
