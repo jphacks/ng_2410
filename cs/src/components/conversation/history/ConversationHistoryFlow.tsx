@@ -65,8 +65,9 @@ const getLayoutedElements = (nodes: any, edges: any, direction = "LR") => {
 const ConversationHistoryFlow = ({
 	messageNodes,
 	messageEdges,
+	analysisArray,
 	dataArray,
-}: { messageNodes: any[]; messageEdges: any[]; dataArray: any[];}) => {
+}: { messageNodes: any[]; messageEdges: any[]; analysisArray: any[]; dataArray: any[];}) => {
 	const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
 		messageNodes,
 		messageEdges,
@@ -142,6 +143,11 @@ const ConversationHistoryFlow = ({
         setPopupContent(null);
     };
 
+	const [showGraph, setShowGraph] = useState(false);
+	const toggleGraph = () => {
+        setShowGraph(prev => !prev); // 現在の状態を反転
+    };
+
 	return (
 		<ReactFlow
 			nodes={nodes}
@@ -186,12 +192,30 @@ const ConversationHistoryFlow = ({
 				</div>
             </div>
 		)}
-			<div style={{zIndex: 10000, position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", backgroundColor: "#FFF",}}>
-				<p style={{textAlign: "center"}}>タイトル</p>
-				<ConversationGraph 
-					dataArray={dataArray}
-				/>
+		<div style={{width:"100%", backgroundColor: "#F3AF97", position: "absolute", top: 63, left: "50%", transform: "translateX(-50%)", zIndex: 100, padding: "20px"}}>
+				<div style={{ display: "flex", justifyContent: "space-between", width: "100%",fontSize: "2em", fontWeight: "bold", }}>
+					<p style={{ margin: 0 }}>総評！</p>
+					<p style={{ margin: 0 }}>{analysisArray[1]}点 / 100</p>
+				</div>
+				<div style={{ textAlign: "left", maxHeight: "100px", overflowY: "auto" }}>
+					<p style={{fontSize: "1em"}}>{analysisArray[0]}</p>
+				</div>
+		</div>
+
+		{showGraph && (
+			<div style={{borderRadius: "10px", zIndex: 10000, position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", backgroundColor: "#FFF",boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.4)",}}>
+				<p style={{fontWeight: "bold", textAlign: "center", fontSize: "1.5em", margin: "10px"}}>会話点数分析グラフ</p>
+				<div style={{margin: "10px"}}>
+					<ConversationGraph 
+						dataArray={dataArray}
+					/>
+				</div>
+				<p></p>
 			</div>
+		)}
+		<button style={{ height: 45, width:90, color: "white", fontWeight: "bold", fontSize: "1.2em", backgroundColor: "#7D8B95", borderRadius: "20px", position: "absolute", left: 30, bottom: 100, zIndex: 100 }} onClick={toggleGraph}>
+			グラフ
+		</button>
 		</ReactFlow>
 	);
 };
