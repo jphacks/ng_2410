@@ -9,6 +9,7 @@ import { auth } from "@clerk/nextjs/server";
 import { ChatOpenAI } from '@langchain/openai';
 import React from "react";
 import { string } from "zod";
+import ConversationGraph from "@/components/conversation/ConversationGraph";
 
 const ConversationHistoryDetail = async ({
 	params,
@@ -144,6 +145,7 @@ const ConversationHistoryDetail = async ({
 	const analysis = [analysisMessage, analysisScore];
 	const messageNodes = [] as any[];
 	const messageEdgs = [] as any[];
+	const messageScore = [] as any[];
 	const addNode = (message: MessageWithChildren) => {
 		messageNodes.push({
 			id: message.id,
@@ -151,6 +153,9 @@ const ConversationHistoryDetail = async ({
 			position: { x: 0, y: 0 },
 		});
 		message.children.map(addNode);
+		messageScore.push({
+			name: String(message.id), uv:90
+		});
 	};
 	const addEdge = (message: MessageWithChildren) => {
 		message.children.map((child) => {
@@ -172,7 +177,11 @@ const ConversationHistoryDetail = async ({
 				messageNodes={messageNodes}
 				messageEdges={messageEdgs}
 				analysisArray={analysis}
+				dataArray={messageScore}
 			/>
+			<button style={{ height: 45, width:150, color: "white", fontWeight: "bold", fontSize: "1.2em", backgroundColor: "#F3AF97", borderRadius: "10px", position: "absolute", right: 30, bottom: 50, zIndex: 100 }} >
+				ホームへ戻る
+			</button>
 		</div>
 	);
 };
