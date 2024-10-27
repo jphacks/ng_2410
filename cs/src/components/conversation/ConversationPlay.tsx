@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { useUser } from "@clerk/nextjs";
 
-const ConversationPage = ({ conversationSessionId }: { conversationSessionId: string }) => {
+const ConversationPage = ({ conversationSessionId, backGround }: { conversationSessionId: string, backGround: string }) => {
 	const {
 		items,
 		isConnected,
@@ -21,7 +21,7 @@ const ConversationPage = ({ conversationSessionId }: { conversationSessionId: st
 		changeTurnEndType,
 		conversationAnalysis,
 		scrollRef,
-	} = useConversation({ conversationSessionId });
+	} = useConversation({ conversationSessionId, backGround });
 	const { user } = useUser()
 
 	return (

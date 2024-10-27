@@ -18,7 +18,8 @@ interface RealtimeEvent {
 
 const useConversation = ({
 	conversationSessionId,
-}: { conversationSessionId: string }) => {
+	backGround
+}: { conversationSessionId: string, backGround: string }) => {
 	const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 	const { client: supabaseClient, session } = useSupabaseClient()
 	/**
@@ -178,7 +179,7 @@ const useConversation = ({
 		const client = clientRef.current;
 
 		// Set instructions
-		client.updateSession({ instructions: instructions });
+		client.updateSession({ instructions: `${instructions} ${backGround}` });
 		// Set transcription, otherwise we don't get user transcriptions back
 		client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 

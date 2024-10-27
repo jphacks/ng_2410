@@ -4,6 +4,7 @@ import {
 	ConversationSessionWithChildren,
 	conversationToTree,
 } from "@/types/conversation";
+import { getBackground } from "@/utils/get_background";
 import { createClerkSupabaseClient } from "@/utils/supabase/client";
 import { auth } from "@clerk/nextjs/server";
 
@@ -56,8 +57,9 @@ const ConversationPage = async ({
 		children: conversationToTree(conversationsSession.messages),
 	};
 
+	const backGround = getBackground()
 	return (
-		<ConversationPlay conversationSessionId={conversationSessionId} />
+		<ConversationPlay conversationSessionId={conversationSessionId} backGround={backGround} />
 	);
 };
 
