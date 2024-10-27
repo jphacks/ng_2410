@@ -51,8 +51,8 @@
 
 <img src="images/graph2.png" alt="graph2">
 <p align="center">
-  <img src="images/graph1.png" alt="graph1" height=250>
-  <img src="images/graph3.png" alt="graph3" height=250>
+  <img src="images/graph1.png" alt="graph1" height=150>
+  <img src="images/graph3.png" alt="graph3" height=150>
 </p>
 
 
