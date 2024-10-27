@@ -43,9 +43,6 @@ const ConversationHistoryDetail = async ({
 		createdAt: message.created_at,
 	}));
 
-	const analysisMessage = "総評サンプル文。きっと";
-	const analysisScore = String(70);
-	const analysis = [analysisMessage, analysisScore];
 	const messagesWithChildren = conversationToTree(messages);
 
 	// 順番にした配列を作成（childrenがある場合は0番目の要素
@@ -68,10 +65,13 @@ const ConversationHistoryDetail = async ({
 	const input = `${prompt}\n\n${sortedMessages.map((msg) => `${msg.role}:${msg.content.replaceAll("\n", "")}`).join('\n\n')}`
 	console.log(input)
 	const content = await llm.invoke(input);
-	const text = content.content //
-	console.log(text)
+	const text_analy = content.content //
+	console.log(text_analy)
 
-
+	// const analysisMessage = "総評サンプル文。きっと";
+	const analysisMessage = text_analy;
+	const analysisScore = String(70);
+	const analysis = [analysisMessage, analysisScore];
 	const messageNodes = [] as any[];
 	const messageEdgs = [] as any[];
 	const addNode = (message: MessageWithChildren) => {
