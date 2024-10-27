@@ -33,6 +33,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 		return Response.json({ message: "Unauthorized" }, { status: 401 });
 	}
 	return Response.json({
-		message: data
+		message: data,
+		score: 50
 	});
 };

@@ -11,13 +11,13 @@ type ConversationAnalysisProps = {
 
 type AnalyzeConversationResult =
 	| {
-			conversationAnalysis: ConversationAnalysis;
-			error?: undefined;
-	  }
+		conversationAnalysis: ConversationAnalysis;
+		error?: undefined;
+	}
 	| {
-			conversationAnalysis?: undefined;
-			error: ConversationAnalysisError;
-	  };
+		conversationAnalysis?: undefined;
+		error: ConversationAnalysisError;
+	};
 
 export const getConversationAnalysis = async (
 	messages: ConversationAnalysisProps,
@@ -39,6 +39,7 @@ export const getConversationAnalysis = async (
 	const data = await response.json();
 	const conversationAnalysis: ConversationAnalysis = {
 		message: data.message,
+		score: data.score,
 	} as ConversationAnalysis;
 	return { conversationAnalysis };
 };
