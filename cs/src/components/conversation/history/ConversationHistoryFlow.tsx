@@ -62,7 +62,8 @@ const getLayoutedElements = (nodes: any, edges: any, direction = "LR") => {
 const ConversationHistoryFlow = ({
 	messageNodes,
 	messageEdges,
-}: { messageNodes: any[]; messageEdges: any[] }) => {
+	analysisArray,
+}: { messageNodes: any[]; messageEdges: any[]; analysisArray: any[];}) => {
 	const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
 		messageNodes,
 		messageEdges,
@@ -157,7 +158,7 @@ const ConversationHistoryFlow = ({
                 // onClick={closePopup}
                 style={{
 					position: "absolute",
-					top: popupPosition.y - 100,
+					top: popupPosition.y - 200,
 					left: popupPosition.x - 100,
 					backgroundColor: "#939498",
 					border: "1px solid black",
@@ -167,23 +168,29 @@ const ConversationHistoryFlow = ({
 					zIndex: 1000,
 				}}
             >
-				<div style={{ textAlign: "left", color: "white", }}>
-					<p>{popupContent}</p>
+				<div style={{ textAlign: "right", color: "white", }}>
+					<p><span style={{ fontWeight: "bold" }}>{typeof popupContent === "string" ? popupContent.split(':')[1] : popupContent}</span>点 / 100</p>
 				</div>
-				<div>
+				<div style={{ textAlign: "left", color: "white", paddingBottom: 10}}>
+					<p>Advice：</p>
+					{/* <p>{popupContent.split(':')}</p> */}
+					<p>{typeof popupContent === "string" ? popupContent.split(':')[0] : popupContent}</p>
+				</div>
+				<div style={{ textAlign: "right", color: "white"}}>
 					<button onClick={closePopup}>閉じる</button>
-					<button>ここから</button>
+					{/* <button>ここから</button> */}
 				</div>
             </div>
 		)}
 			<div style={{width:"80%", backgroundColor: "#F3AF97", position: "absolute", top: 150, left: "50%", transform: "translateX(-50%)", zIndex: 100, padding: "20px"}}>
 				<div style={{ textAlign: "left" }}>
-					<p style={{fontSize: "2em"}}>総評！</p>
-					<p style={{fontSize: "1em"}}>サンプルサンプルサンプル</p>
+					<p style={{fontSize: "2em", fontWeight: "bold",}}>総評！</p>
+					<p style={{fontSize: "1em"}}>{analysisArray[0]}</p>
+					<p style={{fontSize: "1em"}}>{analysisArray[1]}</p>
 				</div>
 			</div>
 
-			<button style={{ height: 45, width:150, color: "white", fontWeight: "bold", fontSize: "1.2em", backgroundColor: "#F3AF97", borderRadius: "10px", position: "absolute", right: 30, bottom: 50, zIndex: 100 }}>
+			<button style={{ height: 45, width:150, color: "white", fontWeight: "bold", fontSize: "1.2em", backgroundColor: "#F3AF97", borderRadius: "10px", position: "absolute", right: 30, bottom: 50, zIndex: 100 }} >
 				ホームへ戻る
 			</button>
 		</ReactFlow>

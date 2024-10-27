@@ -41,6 +41,10 @@ const ConversationHistoryDetail = async ({
 		content: message.content,
 		createdAt: message.created_at,
 	}));
+
+	const analysisMessage = "総評サンプル文。きっと";
+	const analysisScore = String(70);
+	const analysis = [analysisMessage, analysisScore];
 	const messagesWithChildren = conversationToTree(messages);
 
 	const messageNodes = [] as any[];
@@ -48,7 +52,7 @@ const ConversationHistoryDetail = async ({
 	const addNode = (message: MessageWithChildren) => {
 		messageNodes.push({
 			id: message.id,
-			data: { label: message.content, popupContent: "サンプルサンプル" + String(message.id) },
+			data: { label: message.content, popupContent: "サンプルサンプル" + String(message.id) + ":" + 90},
 			position: { x: 0, y: 0 },
 		});
 		message.children.map(addNode);
@@ -72,6 +76,7 @@ const ConversationHistoryDetail = async ({
 			<ConversationHistory
 				messageNodes={messageNodes}
 				messageEdges={messageEdgs}
+				analysisArray={analysis}
 			/>
 		</div>
 	);
