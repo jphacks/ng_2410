@@ -187,7 +187,7 @@ const ConversationHistoryFlow = ({
 					<p style={{ margin: 0 }}>総評！</p>
 					<p style={{ margin: 0 }}>{analysisArray[1]}点 / 100</p>
 				</div>
-				<div style={{ textAlign: "left" }}>
+				<div style={{ textAlign: "left", maxHeight: "150px", overflowY: "auto" }}>
 					<p style={{fontSize: "1em"}}>{analysisArray[0]}</p>
 				</div>
 			</div>
