@@ -8,11 +8,13 @@ import { createClerkSupabaseClient } from "@/utils/supabase/client";
 import { auth } from "@clerk/nextjs/server";
 import { ChatOpenAI } from '@langchain/openai';
 import React from "react";
+import { string } from "zod";
 
 const ConversationHistoryDetail = async ({
 	params,
 }: { params: { session_id: string } }) => {
 	const { session_id } = params;
+	// console.log(params);
 	const { getToken, userId } = await auth();
 	const token = await getToken({ template: "supabase" });
 	if (!token) {
@@ -40,6 +42,7 @@ const ConversationHistoryDetail = async ({
 		content: message.content,
 		createdAt: message.created_at,
 	}));
+
 	const messagesWithChildren = conversationToTree(messages);
 
 	// 順番にした配列を作成（childrenがある場合は0番目の要素
@@ -62,16 +65,19 @@ const ConversationHistoryDetail = async ({
 	const input = `${prompt}\n\n${sortedMessages.map((msg) => `${msg.role}:${msg.content.replaceAll("\n", "")}`).join('\n\n')}`
 	console.log(input)
 	const content = await llm.invoke(input);
-	const text = content.content //
-	console.log(text)
+	const text_analy = content.content //
+	console.log(text_analy)
 
-
+	// const analysisMessage = "総評サンプル文。きっと";
+	const analysisMessage = text_analy;
+	const analysisScore = String(70);
+	const analysis = [analysisMessage, analysisScore];
 	const messageNodes = [] as any[];
 	const messageEdgs = [] as any[];
 	const addNode = (message: MessageWithChildren) => {
 		messageNodes.push({
 			id: message.id,
-			data: { label: message.content },
+			data: { label: message.content, popupContent: "サンプルサンプル" + String(message.id) + "::::" + 90},
 			position: { x: 0, y: 0 },
 		});
 		message.children.map(addNode);
@@ -82,6 +88,8 @@ const ConversationHistoryDetail = async ({
 				id: `${message.id}-${child.id}`,
 				source: message.id,
 				target: child.id,
+				animated: true,
+				style: { strokeWidth: 4 },
 			});
 			addEdge(child);
 		});
@@ -93,6 +101,7 @@ const ConversationHistoryDetail = async ({
 			<ConversationHistory
 				messageNodes={messageNodes}
 				messageEdges={messageEdgs}
+				analysisArray={analysis}
 			/>
 		</div>
 	);
