@@ -161,7 +161,6 @@ const ConversationHistoryFlow = ({
 					top: popupPosition.y - 200,
 					left: popupPosition.x - 100,
 					backgroundColor: "#939498",
-					border: "1px solid black",
 					padding: "10px",
 					width: 300,
 					borderRadius: "10px",
@@ -176,18 +175,20 @@ const ConversationHistoryFlow = ({
 					{/* <p>{popupContent.split(':')}</p> */}
 					<p>{typeof popupContent === "string" ? popupContent.split('::::')[0] : popupContent}</p>
 				</div>
-				<div style={{ textAlign: "right", color: "white"}}>
+				<div style={{ display: "flex", justifyContent: "space-between", width: "100%", color: "white", paddingBottom: 10}}>
+					<button style={{ height: 40, color: "white", fontWeight: "bold", backgroundColor: "#F3AF97", borderRadius: "10px", }} >
+						<span style={{margin:5}}>ここから始める</span>
+					</button>
 					<button onClick={closePopup}>閉じる</button>
-					{/* <button>ここから</button> */}
 				</div>
             </div>
 		)}
-			<div style={{width:"80%", backgroundColor: "#F3AF97", position: "absolute", top: 150, left: "50%", transform: "translateX(-50%)", zIndex: 100, padding: "20px"}}>
+			<div style={{width:"100%", backgroundColor: "#F3AF97", position: "absolute", top: 63, left: "50%", transform: "translateX(-50%)", zIndex: 100, padding: "20px"}}>
 				<div style={{ display: "flex", justifyContent: "space-between", width: "100%",fontSize: "2em", fontWeight: "bold", }}>
 					<p style={{ margin: 0 }}>総評！</p>
 					<p style={{ margin: 0 }}>{analysisArray[1]}点 / 100</p>
 				</div>
-				<div style={{ textAlign: "left" }}>
+				<div style={{ textAlign: "left", maxHeight: "100px", overflowY: "auto" }}>
 					<p style={{fontSize: "1em"}}>{analysisArray[0]}</p>
 				</div>
 			</div>
