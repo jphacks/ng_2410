@@ -20,7 +20,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 	const token = await getToken();
 	// OpenAI LLMを初期化（APIキーは環境変数から取得）
 	const llm = new OpenAI({
-		modelName: "gpt-4o-mini",
+		modelName: "gpt-4o",
 		openAIApiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY, // 環境変数でAPIキーを指定
 	});
 	// メッセージを一つのテキストに連結
