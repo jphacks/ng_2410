@@ -9,6 +9,7 @@ import { auth } from "@clerk/nextjs/server";
 import { ChatOpenAI } from '@langchain/openai';
 import React from "react";
 import { string } from "zod";
+import ConversationGraph from "@/components/conversation/ConversationGraph";
 
 const ConversationHistoryDetail = async ({
 	params,
@@ -74,6 +75,7 @@ const ConversationHistoryDetail = async ({
 	const analysis = [analysisMessage, analysisScore];
 	const messageNodes = [] as any[];
 	const messageEdgs = [] as any[];
+	const messageScore = [] as any[];
 	const addNode = (message: MessageWithChildren) => {
 		messageNodes.push({
 			id: message.id,
@@ -81,6 +83,9 @@ const ConversationHistoryDetail = async ({
 			position: { x: 0, y: 0 },
 		});
 		message.children.map(addNode);
+		messageScore.push({
+			name: String(message.id), uv:90
+		});
 	};
 	const addEdge = (message: MessageWithChildren) => {
 		message.children.map((child) => {
@@ -101,8 +106,20 @@ const ConversationHistoryDetail = async ({
 			<ConversationHistory
 				messageNodes={messageNodes}
 				messageEdges={messageEdgs}
-				analysisArray={analysis}
+				dataArray={messageScore}
 			/>
+			<div style={{width:"100%", backgroundColor: "#F3AF97", position: "absolute", top: 63, left: "50%", transform: "translateX(-50%)", zIndex: 100, padding: "20px"}}>
+				<div style={{ display: "flex", justifyContent: "space-between", width: "100%",fontSize: "2em", fontWeight: "bold", }}>
+					<p style={{ margin: 0 }}>総評！</p>
+					<p style={{ margin: 0 }}>{analysis[1]}点 / 100</p>
+				</div>
+				<div style={{ textAlign: "left", maxHeight: "100px", overflowY: "auto" }}>
+					<p style={{fontSize: "1em"}}>{analysis[0]}</p>
+				</div>
+			</div>
+			<button style={{ height: 45, width:150, color: "white", fontWeight: "bold", fontSize: "1.2em", backgroundColor: "#F3AF97", borderRadius: "10px", position: "absolute", right: 30, bottom: 50, zIndex: 100 }} >
+				ホームへ戻る
+			</button>
 		</div>
 	);
 };

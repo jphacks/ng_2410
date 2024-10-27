@@ -11,6 +11,7 @@ import {
 } from "@xyflow/react";
 import React, { useCallback, useState } from "react";
 import "@xyflow/react/dist/style.css";
+import ConversationGraph from "../ConversationGraph";
 
 const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
@@ -64,8 +65,8 @@ const getLayoutedElements = (nodes: any, edges: any, direction = "LR") => {
 const ConversationHistoryFlow = ({
 	messageNodes,
 	messageEdges,
-	analysisArray,
-}: { messageNodes: any[]; messageEdges: any[]; analysisArray: any[];}) => {
+	dataArray,
+}: { messageNodes: any[]; messageEdges: any[]; dataArray: any[];}) => {
 	const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
 		messageNodes,
 		messageEdges,
@@ -185,19 +186,12 @@ const ConversationHistoryFlow = ({
 				</div>
             </div>
 		)}
-			<div style={{width:"100%", backgroundColor: "#F3AF97", position: "absolute", top: 63, left: "50%", transform: "translateX(-50%)", zIndex: 100, padding: "20px"}}>
-				<div style={{ display: "flex", justifyContent: "space-between", width: "100%",fontSize: "2em", fontWeight: "bold", }}>
-					<p style={{ margin: 0 }}>総評！</p>
-					<p style={{ margin: 0 }}>{analysisArray[1]}点 / 100</p>
-				</div>
-				<div style={{ textAlign: "left", maxHeight: "100px", overflowY: "auto" }}>
-					<p style={{fontSize: "1em"}}>{analysisArray[0]}</p>
-				</div>
+			<div style={{zIndex: 10000, position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", backgroundColor: "#FFF",}}>
+				<p style={{textAlign: "center"}}>タイトル</p>
+				<ConversationGraph 
+					dataArray={dataArray}
+				/>
 			</div>
-
-			<button style={{ height: 45, width:150, color: "white", fontWeight: "bold", fontSize: "1.2em", backgroundColor: "#F3AF97", borderRadius: "10px", position: "absolute", right: 30, bottom: 50, zIndex: 100 }} >
-				ホームへ戻る
-			</button>
 		</ReactFlow>
 	);
 };
